@@ -1,0 +1,36 @@
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.corpus import wordnet
+
+def morphological_analysis(word):
+    tokens = [char for char in word]
+    stemmer = nltk.PorterStemmer()
+    stems = [stemmer.stem(token) for token in tokens]
+    prefixes = [word[:i] for i in range(len(word) + 1)]
+    suffixes = [word[i:] for i in range(len(word) + 1)]
+    lemmas = set()
+    for synset in wordnet.synsets(word):
+        for lemma in synset.lemmas():
+            lemmas.add(lemma.name())
+
+    return {
+        'Word': word,
+        'Tokens': tokens,
+        'Stems': stems,
+        'Prefixes': prefixes,
+        'Suffixes': suffixes,
+        'Lemmas': list(lemmas)
+    }
+
+def main():
+    word = "running"
+    analysis = morphological_analysis(word)
+    print("Morphological analysis for the word:", word)
+    print("Tokens:", analysis['Tokens'])
+    print("Stems:", analysis['Stems'])
+    print("Prefixes:", analysis['Prefixes'])
+    print("Suffixes:", analysis['Suffixes'])
+    print("Lemmas:", analysis['Lemmas'])
+
+if __name__ == "__main__":
+    main()
