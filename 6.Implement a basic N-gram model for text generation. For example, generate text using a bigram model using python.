@@ -1,0 +1,40 @@
+import random
+
+def generate_bigram_model(text):
+    # Split the text into words
+    words = text.split()
+    
+    # Create a dictionary to store bigrams
+    bigrams = {}
+    for i in range(len(words) - 1):
+        if words[i] not in bigrams:
+            bigrams[words[i]] = []
+        bigrams[words[i]].append(words[i + 1])
+    
+    return bigrams
+
+def generate_text(bigrams, start_word, length=10):
+    # Initialize the generated text with the starting word
+    generated_text = [start_word]
+    current_word = start_word
+    
+    # Generate text based on bigram model
+    for _ in range(length - 1):
+        if current_word in bigrams:
+            next_word = random.choice(bigrams[current_word])
+            generated_text.append(next_word)
+            current_word = next_word
+        else:
+            break
+    
+    return ' '.join(generated_text)
+
+# Example text
+text = "The quick brown fox jumps over the lazy dog"
+
+# Generate bigram model
+bigram_model = generate_bigram_model(text)
+
+# Generate text using bigram model
+generated_text = generate_text(bigram_model, start_word="The", length=10)
+print("Generated Text:", generated_text)
