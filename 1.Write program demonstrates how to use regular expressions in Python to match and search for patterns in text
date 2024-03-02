@@ -1,0 +1,15 @@
+import re
+def main():
+    text = "The quick brown fox jumps over the lazy dog."
+    pattern = r'\bq\w+'
+    matches = re.findall(pattern, text)
+    print("Words starting with 'q':", matches)
+    word_to_search = 'quick'
+    search_result = re.search(word_to_search, text)
+    if search_result:
+        print(f"'{word_to_search}' found at index:", search_result.start())
+    else:
+        print(f"'{word_to_search}' not found in the text.")
+
+if __name__ == "__main__":
+    main()
