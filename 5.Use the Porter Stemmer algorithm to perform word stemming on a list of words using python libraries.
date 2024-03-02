@@ -1,0 +1,25 @@
+import nltk
+from nltk.stem import PorterStemmer
+
+def perform_stemming(words):
+    stemmer = PorterStemmer()
+    stemmed_words = [stemmer.stem(word) for word in words]
+    return stemmed_words
+
+def main():
+    # Sample list of words
+    words = ['running', 'easily', 'friendship', 'flying', 'dogs', 'cats', 'better']
+
+    # Perform stemming
+    stemmed_words = perform_stemming(words)
+
+    # Print the original words and their stemmed forms
+    for original, stemmed in zip(words, stemmed_words):
+        print(f"Original: {original} --> Stemmed: {stemmed}")
+
+if __name__ == "__main__":
+    # Download the NLTK data required for stemming (if not already downloaded)
+    nltk.download('punkt')
+
+    # Run the main function
+    main()
