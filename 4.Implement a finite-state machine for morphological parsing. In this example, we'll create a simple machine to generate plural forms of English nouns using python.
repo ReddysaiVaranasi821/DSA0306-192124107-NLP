@@ -1,0 +1,64 @@
+class State:
+    def __init__(self, name):
+        self.name = name
+        self.transitions = {}
+    def add_transition(self, symbol, next_state):
+        self.transitions[symbol] = next_state
+    def get_next_state(self, symbol):
+        return self.transitions.get(symbol, None)
+
+
+class MorphologicalFSM:
+    def __init__(self):
+        self.states = {}
+        self.current_state = None
+        self.build()
+
+    def build(self):
+        start_state = State("start")
+        s_state = State("s_state")
+        es_state = State("es_state")
+        ies_state = State("ies_state")
+        start_state.add_transition('s', s_state)
+        start_state.add_transition('e', es_state)
+        start_state.add_transition('i', ies_state)
+
+        s_state.add_transition('', None)
+        es_state.add_transition('', None)
+        ies_state.add_transition('', None)
+        self.states[start_state.name] = start_state
+        self.states[s_state.name] = s_state
+        self.states[es_state.name] = es_state
+        self.states[ies_state.name] = ies_state
+        self.current_state = start_state
+
+    def process_input(self, word):
+        for symbol in reversed(word):
+            next_state = self.current_state.get_next_state(symbol)
+            if next_state:
+                self.current_state = next_state
+            else:
+                return None
+        return self.current_state.name
+
+    def generate_plural(self, noun):
+        result_state = self.process_input(noun)
+        if result_state == "s_state":
+            return noun + "s"
+        elif result_state == "es_state":
+            return noun + "es"
+        elif result_state == "ies_state":
+            return noun[:-1] + "ies"
+        else:
+            return "Invalid noun or no plural form found"
+
+def main():
+    fsm = MorphologicalFSM()
+    nouns = ['cat', 'dog', 'fox', 'church', 'baby', 'child', 'party', 'spy']
+    for noun in nouns:
+        plural = fsm.generate_plural(noun)
+        print(f"The plural form of '{noun}' is '{plural}'")
+
+
+if __name__ == "__main__":
+    main()
